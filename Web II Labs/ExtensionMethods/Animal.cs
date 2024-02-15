@@ -5,7 +5,8 @@
         public string Name { get; set; }
         public string Family {  get; set; }
         public Animal() { }
-        public Animal(string name) { 
+        public Animal(string name) {
+            this.Name = name;
         }
 
         public String getType()
