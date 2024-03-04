@@ -36,8 +36,16 @@ app.MapControllerRoute(
 {
     Animal finhas = new Animal("Human");
     finhas.Family = "Mammal";
+
+    Animal Semion = new Animal("Human");
+    Semion.Family = "Gustavo Family";
+
     Console.WriteLine("Type of Animal is: "+finhas.getType());
     Console.WriteLine("The family of the Animal is: "+finhas.getFamily());
+
+    Console.WriteLine("Type of Animal for semi is : " + Semion.getType());
+    Console.WriteLine("The family of the Animal for semi is : " + Semion.getFamily());
+
 
 }
 
