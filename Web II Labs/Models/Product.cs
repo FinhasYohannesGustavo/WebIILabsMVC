@@ -1,4 +1,6 @@
-﻿namespace Web_II_Labs.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Web_II_Labs.Models
 {
     public class Product
     {
@@ -8,5 +10,12 @@
         public decimal UnitPrice { get; set; }
         public int Quantity { get; set; }
         public decimal QuantityPerUnitPrice { get; set; }
+
+        [NotMapped]
+        public List<IFormFile> ProductImage { get; set; }
+
+        public string? ImgCover { get; set; }
+
+        public List<ProductGallery> ProductGallery { get; set; }
     }
 }

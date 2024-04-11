@@ -1,10 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Web_II_Labs.Interfaces;
+using Web_II_Labs.LocalStorage;
 using Web_II_Labs.Models;
 
 namespace Web_II_Labs.Controllers
+
 {
     public class ProductController : Controller
     {
+        private readonly IWebHostEnvironment webHostEnvironment;
+        private ProductCRUD productCRUD;
+        public ProductController(IWebHostEnvironment webHostEnvironment,ProductCRUD IproductCrud)
+        {
+                this.webHostEnvironment = webHostEnvironment;
+                this.productCRUD = IproductCrud;    
+        }
         public IActionResult Index()
         {
             return View();
@@ -15,20 +25,37 @@ namespace Web_II_Labs.Controllers
         {
             return View();
         }
+        public IActionResult getDummyProds()
+        {
+            ViewData["Title"] = "List of products from view data";
+            ViewData["products"] = DataSource.getDummyProducts();
+            return View();
+        }
+
+        public IActionResult getDummyProdsFromViewBag()
+        {
+            ViewBag.title = "Gtting all products from view bag";
+            ViewBag.products = DataSource.getDummyProducts();
+            return View("getDummyProductsFromViewBag");
+        }
 
         [HttpPost]
         [ActionName("Create")]
-        public IActionResult CreateProd()
-        {
+        //public IActionResult CreateProd()
+        //{
 
-            ViewBag.Title = "From Form Request Dict";
-            Product dummyProd = new Product();
-            dummyProd.Id = int.Parse(Request.Form["ID"]);
-            dummyProd.Name = Request.Form["Name"];
-            dummyProd.Description = Request.Form["Description"];
+        //    ViewBag.Title = "From Form Request Dict";
+        //    Product dummyProd = new Product();
+        //    dummyProd.Id = int.Parse(Request.Form["ID"]);
+        //    dummyProd.Name = Request.Form["Name"];
+        //    dummyProd.Description = Request.Form["Description"];
 
-            return View("CreateProduct", dummyProd);
-        }
+
+        //    return View("CreateProduct", dummyProd);
+        //}
+
+
+
 
         //public IActionResult Edit(int id, String name, string Description)
         //{
@@ -42,13 +69,25 @@ namespace Web_II_Labs.Controllers
         //}
 
         //Sending form data with model binded object
-        //public IActionResult CreateProd(Product product)
-        //{
-        //    ViewBag.Title = "Recieved data with model binded object";
+        public IActionResult CreateProd(Product product)
+        {
+            ViewBag.Title = "Recieved data with model binded object";
 
-        //    return View("CreateProduct", product);
+            for(int i = 0; i < product.ProductGallery.Count;i++)
+            {
+                string imgPath = ("CoverImage/" + product.ProductGallery[i].FileName+ Guid.NewGuid().ToString()+Path.GetExtension(product.ProductGallery[i].FileName));
 
-        //}
+                string serverPath = Path.Combine(webHostEnvironment.WebRootPath, imgPath);
+                product.ImgCover = imgPath;
+                
+
+            }
+            productCRUD.AddItem(product);
+
+            return View("CreateProduct", product);
+
+        }
 
     }
 }
+
