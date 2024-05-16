@@ -10,13 +10,26 @@ using static Web_II_Labs.Delegates.CalcDelagate;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContextPool<ProductContext>(option => option.
-UseSqlServer(builder.Configuration.GetConnectionString("ProductDbConnection")));
+    UseSqlServer(builder.Configuration.GetConnectionString("ProductDbConnection")));
 builder.Services.AddTransient<ProductCRUD,CrudOperatorProduct>();
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ProductContext>();
+builder.Services.AddAuthorization(options => {
+    options.AddPolicy("CreateProduct", policy =>
+        {
+            policy.RequireRole("Admin");
+            policy.RequireClaim("AdminCreateProduct", "Create Product");
+
+        });
+    });
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 // Add your custom middleware to the service collection
 builder.Services.AddTransient<AddToHeaderMiddleware>();
+builder.Services.ConfigureApplicationCookie(op =>
+{
+    op.LoginPath = "/User/Login";
+});
 
 
 
@@ -36,6 +49,7 @@ app.UseStaticFiles();
 // Use your custom middleware
 app.UseMiddleware<AddToHeaderMiddleware>();
 app.UseRouting();
+app.UseAuthentication();
 
 app.UseAuthorization();
 

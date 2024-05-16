@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model IQueryable<IdentityUser>;
+<h1 class="bg-info text-white">All Users</h1>
+<a asp-action="CreateUser">Create User</a>
+<table class="table table-sm table-bordered mt-2">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+    </tr>
+    @foreach(var user in Model)
+    {
+        <tr>
+            <td>@user.Id</td>
+            <td>@user.UserName</td>
+            <td>@user.Email</td>
+            <td>
+            <a class="btn btn-sm btn-primary" asp-controller="User"
+            asp-action="Update" asp-route-id="@user.Id">Update</a>
+            </td>
+
+            <td>
+                <a type="submit" class="btn btn-sm btn-primary" asp-controller="User"
+                   asp-action="Delete" asp-route-id="@user.Id" 
+                   onclick="return confirm('Do you really want to delete this account?');">Delete</a>
+            </td>
+        </tr>
+        
+    }
+</table>

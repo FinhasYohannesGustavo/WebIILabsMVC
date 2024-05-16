@@ -19,6 +19,7 @@ namespace Web_II_Labs.Models
 
         [Required(ErrorMessage = "Please Confirm your password")]
         [DataType(DataType.Password)]
+        [Compare("Password",ErrorMessage ="The passwords do not match")]
         public string ConfirmPassword { get; set; }
 
     }

@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <form asp-controller="Claims" asp-action="Create" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="form-group">
+            <label>Claim Type</label>
+            <input class="form-control" type="text" name="claimType"/>
+        </div>
+
+        <div class="form-group">
+            <label>Claim Value</label>
+            <input class="form-control" type="text" name="claimValue"/>
+        </div>
+
+        <div class="form-group btn">
+            <button type="submit">Submit</button>
+        </div>
+
+    </form>
+
+</body>
+</html>

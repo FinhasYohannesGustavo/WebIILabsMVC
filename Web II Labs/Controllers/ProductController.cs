@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Web_II_Labs.Interfaces;
 using Web_II_Labs.LocalStorage;
 using Web_II_Labs.Models;
@@ -21,6 +23,7 @@ namespace Web_II_Labs.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -69,6 +72,7 @@ namespace Web_II_Labs.Controllers
         //}
 
         //Sending form data with model binded object
+        [Authorize(Policy = "")]
         public IActionResult CreateProd(Product product)
         {
             ViewBag.Title = "Recieved data with model binded object";
